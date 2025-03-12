@@ -1,13 +1,19 @@
 pipeline {
     agent any
     stages {
-        stage('Build') {
+        stage('Checkout') {
             steps {
                 script {
-                    docker.image('maven:3.8.6').inside {
-                        sh 'mvn -B -DskipTests clean package'
-                    }
+                    git(
+                        branch: 'master',
+                        url: 'https://github.com/imabhosale/simple-java-maven-app.git'
+                    )
                 }
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'mvn -B -DskipTests clean package'
             }
         }
     }
